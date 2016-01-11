@@ -1,3 +1,15 @@
+//
+// TKV ("Ten thousands villages")
+//
+// TKV's goal is to spread evenly bodies on a 2D rectangle
+// 
+// TKV implementation starts from a Barnes-Hut implementation of the gravitation simulation and make the following modification:
+//
+// - keep bodies within the canvas: bodies "bumps" on bodders (see updatePos)
+// - for spreading, use repulsion instead of gravitational attraction and add friction
+// - use a ring topology instead of a linear topology (think of spreading bodies on a ring, see getDit), modification of metric
+// 
+
 // TKV put body back in box
 function resetPointInBBOX(i,BBOX) {
 	if (bods.pos.x[i] < BBOX[0]) { bods.vel.x[i] *= -1; bods.pos.x[i] = BBOX[0] - (bods.pos.x[i] - BBOX[0]); }
