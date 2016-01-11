@@ -6,8 +6,8 @@
 // TKV implementation starts from a Barnes-Hut implementation of the gravitation simulation and make the following modification:
 //
 // - keep bodies within the canvas: bodies "bumps" on bodders (see updatePos)
-// - for spreading, use repulsion instead of gravitational attraction and add friction
-// - use a ring topology instead of a linear topology (think of spreading bodies on a ring, see getDit), modification of metric
+// - for spreading, use repulsion instead of gravitational attraction and add friction (see updateVel)
+// - use a ring topology instead of a linear topology (think of spreading bodies on a ring, see getDist), modification of metric
 // 
 
 // TKV put body back in box
