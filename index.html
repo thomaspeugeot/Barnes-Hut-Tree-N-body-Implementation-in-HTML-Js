@@ -6,6 +6,7 @@
 	<script src="graphics.js"></script>
 	<script src="userInput.js"></script>
 	<script src="fileIO.js"></script>
+	<script src="tkv.js"></script>
 	<title>Barnes-Hut Tree Implementation in HTML/Javascript</title>
 </head>
 
@@ -17,7 +18,7 @@
 	<tr>
 		<td colspan=2>
 			<div>
-			<button type="button" onclick="addNrandomBodies(100)">Add 100 Random Bodies</button>
+			<button type="button" onclick="addNrandomBodies(1000)">Add 1000 Random Bodies</button>
 			or Choose JSON Input File<input type="file" id="fileInputs" name="files[]" accept="json" /></br>
 			<output id="fileList"></output>
 			</div>
@@ -26,8 +27,8 @@
 	<tr>
 		<td>
 			<canvas id="bnCanvas"
-					width="600" 
-					height="400" >
+					width="500" 
+					height="500" >
 			</canvas>
 			<div>
 				<table border=0>

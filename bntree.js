@@ -45,11 +45,14 @@ var MINMASS = 1e2;
 var MAXMASS = 1e10;
 var G = 1e-5; // Gravitational Constant
 var ETA = 10; // Softening constant
+// TKV
+ETA = 0.01
 var GFACTOR = 1.3; // Higher means distance has more effect (3 is reality)
+GFACTOR = 2; // Higher means distance has more effect (3 is reality)
 
 var DISTANCE_MULTIPLE = 2;
 
-var INTERACTION_METHOD = "BN"; // BN or BRUTE, type of tree search to use
+var INTERACTION_METHOD = "BN"; // "BN"; // BN or BRUTE, type of tree search to use
 var MAXDEPTH = 50; // BN tree max depth ( one less than actual, example with maxdepth = 2, the levels are [0 1 2] )
 var BN_THETA = 0.5;
 
@@ -95,11 +98,12 @@ function addNrandomBodies(n){
 
 function addRandomBody() {
 	addBody(
-		Math.random()*canvasElement.width,
-		Math.random()*canvasElement.height,
-		Math.random()*10-5,
-		Math.random()*10-5,
-		Math.random()*(MAXMASS-MINMASS)+MINMASS
+		(0.25+0.5*Math.random())*canvasElement.width,
+		(0.25+0.5*Math.random())*canvasElement.height,
+	//	0.5*canvasElement.height,
+		0*Math.random()*10-5,
+		0*Math.random()*10-5,
+		0.3 *(MAXMASS-MINMASS)+MINMASS
 	);
 }
 
@@ -319,7 +323,9 @@ function doBNtreeRecurse(bI,node) {
 }
 
 function getDist(x,y,x2,y2) {
-	return Math.sqrt(Math.pow(x2-x,2)+Math.pow(y2-y,2));
+	// return Math.sqrt(Math.pow(x2-x,2)+Math.pow(y2-y,2));
+	// TKV
+	return Math.sqrt(Math.pow( getXModuloDist(x,x2),2)+Math.pow(getYModuloDist(y,y2),2));
 }
 
 // Update accelerations using BN tree
@@ -380,6 +386,15 @@ function getForceVecDirect(m,x,y,m2,x2,y2) {
 	// bods[i] and bods[j], an adds to bods[i]
 	var dx = x2-x;
 	var dy = y2-y;
+	
+	// TKV
+	dx = getXModuloDist( x, x2);
+	dy = getYModuloDist( y, y2);
+
+	if (DEBUG>=3) {
+		console.log("y",y," y2 ", y2, " dy ", dy);
+	}
+		
 	var r = (getDist(x,y,x2,y2)+ETA) * DISTANCE_MULTIPLE;
 	// F_{x|y} = d_{x|y}/r * G*M*m/r.^3;
 	var F = G*m*m2/Math.pow(r,GFACTOR);
@@ -463,13 +478,29 @@ function updatePos(dt_step) {
 	for (var i=0;i<bods.N;i++) {
 		bods.pos.x[i] += bods.vel.x[i]*dt_step;
 		bods.pos.y[i] += bods.vel.y[i]*dt_step;
+		
+		// TKV
+		resetPointInBBOX(i, bnRoot.box);
 	}
 }
 function updateVel(dt_step) {
 	// Update body velocities based on accelerations
 	for (var i=0;i<bods.N;i++) {
-		bods.vel.x[i] += bods.acc.x[i]*dt_step;
-		bods.vel.y[i] += bods.acc.y[i]*dt_step;
+		// bods.vel.x[i] += bods.acc.x[i]*dt_step;
+		// bods.vel.y[i] += bods.acc.y[i]*dt_step;
+		// TKV
+		bods.vel.x[i] -= bods.acc.x[i]*dt_step;
+		bods.vel.y[i] -= bods.acc.y[i]*dt_step;
+		bods.vel.x[i] *= 0.5;
+		bods.vel.y[i] *= 0.5;
+		
+		// TKV, slow the speed below a threshold
+		var vel = Math.sqrt(Math.pow(bods.vel.x[i],2)+Math.pow(bods.vel.y[i],2));
+		var maxVel = (canvasElement.width/1000)/ dt_step;
+		if ( vel > maxVel) {
+			bods.vel.x[i] *= maxVel/vel; 
+			bods.vel.y[i] *= maxVel/vel; 
+		}
 	}
 }
 

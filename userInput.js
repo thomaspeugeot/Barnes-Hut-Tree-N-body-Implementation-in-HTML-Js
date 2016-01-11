@@ -64,7 +64,10 @@ function mouseUp(e) {
 		mouseX = (mouseX-dragx)/arrowLengthRatio + dragx;
 		mouseY = (mouseY-dragy)/arrowLengthRatio + dragy;
 		
-		addBody(dragx,dragy,mouseX-dragx,mouseY-dragy,dragm);
+		// addBody(dragx,dragy,mouseX-dragx,mouseY-dragy,dragm);
+		
+		addBody(dragx, 200,0, 0, 0.3 *(MAXMASS-MINMASS)+MINMASS);
+		
 		refreshGraphics();
 	}
 }
