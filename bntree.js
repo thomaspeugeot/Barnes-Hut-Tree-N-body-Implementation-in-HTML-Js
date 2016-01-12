@@ -48,13 +48,13 @@ var ETA = 10; // Softening constant
 // TKV
 ETA = 0.01
 var GFACTOR = 1.3; // Higher means distance has more effect (3 is reality)
-GFACTOR = 2; // Higher means distance has more effect (3 is reality)
+GFACTOR = 2; // 2 is reality (or I did miss something)
 
 var DISTANCE_MULTIPLE = 2;
 
 var INTERACTION_METHOD = "BN"; // "BN"; // BN or BRUTE, type of tree search to use
 var MAXDEPTH = 50; // BN tree max depth ( one less than actual, example with maxdepth = 2, the levels are [0 1 2] )
-var BN_THETA = 0.5;
+var BN_THETA = 0.5; // the higher, the better speed up, but with lower precision
 
 var dt; // Global DT set by html
 // Bodies struct containing all bodies

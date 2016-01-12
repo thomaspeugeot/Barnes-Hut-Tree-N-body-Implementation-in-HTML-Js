@@ -10,7 +10,10 @@
 // - use a ring topology instead of a linear topology (think of spreading bodies on a ring, see getDist), modification of metric
 // 
 
-// TKV put body back in box
+// TKV 
+// this function puts body back in the parameter bounding box
+// also, the bodies velocities is modified to simulation a perfect rebound on the border
+//
 function resetPointInBBOX(i,BBOX) {
 	if (bods.pos.x[i] < BBOX[0]) { bods.vel.x[i] *= -1; bods.pos.x[i] = BBOX[0] - (bods.pos.x[i] - BBOX[0]); }
 	if (bods.pos.y[i] < BBOX[1]) { bods.vel.y[i] *= -1; bods.pos.y[i] = BBOX[1] - (bods.pos.y[i] - BBOX[1]); }
