@@ -18,7 +18,7 @@
 	<tr>
 		<td colspan=2>
 			<div>
-			<button type="button" onclick="addNrandomBodies(1000)">Add 1000 Random Bodies</button>
+			<button type="button" onclick="addNrandomBodies(100)">Add 100 Random Bodies</button>
 			or Choose JSON Input File<input type="file" id="fileInputs" name="files[]" accept="json" /></br>
 			<output id="fileList"></output>
 			</div>
@@ -40,6 +40,7 @@
 						<td>0</td>
 						<td><input id="debugSlider" type="range" min=0 max=1 value=0 step=1 onchange="setDEBUG(this.value)" /></td>
 						<td>1</td>
+						<td><button type="button" onclick="toggleAttractionRepulsion()">Toggle ATTRACTION REPULSION</button></td>
 					</tr>
 				</table>
 			</div>
@@ -53,7 +54,9 @@
 					<tr><td colspan=3>
 						Bodies: <b><output id="bodyCount">0</output></b><br/>
 						TIME: <b><output id="timeDisp">0.0</output></b><br/>
-						DT: <b><span id="dtSliderVal">0.01</span></b>
+						DT: <b><span id="dtSliderVal">0.01</span></b><br/>
+						BN_THETA: <b><span id="thetaSliderVal">0.5</span></b><br/>
+						Mode: <b><output id="modeAttractionRepulsion">REPULSION</b>
 					</td></tr>
 					<tr><td colspan=3 align="center">
 						
@@ -63,6 +66,12 @@
 						<td>0.0001</td>
 						<td><input type="range" min="-4" max="1" value="-2" step=0.1 onchange="setDT(this.value)" /></td>
 						<td>10</td>
+					</tr>
+					<tr>
+						<td>THETA</td>
+						<td>0.0</td>
+						<td><input type="range" min="0.0" max="0.5" value="0.5"  step=0.1 onchange="setTheta(this.value)" /></td>
+						<td>0.5</td>
 					</tr>
 				</table>
 			</div>

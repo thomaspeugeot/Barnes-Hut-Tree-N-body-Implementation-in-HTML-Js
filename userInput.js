@@ -10,6 +10,7 @@ function initUI(canvasId){
 		console.log("Initialize UI complete.");
 	}
 	setDT(-2);
+	setTheta(0.5);
 }
 
 function mouseClick(e) {
@@ -126,8 +127,18 @@ function setDT(v)
 	if (DEBUG) {
 		console.log("DT SET: ",dt);
 	}
-	document.getElementById("dtSliderVal").innerHTML=dt.toFixed(4);
+	document.getElementById("dtSliderVal").innerHTML = dt.toFixed(4);
 }
+
+function setTheta(v)
+{
+	BN_THETA = v;
+	if (DEBUG) {
+		console.log("THETA SET: ", BN_THETA);
+	}
+	document.getElementById("thetaSliderVal").innerHTML = BN_THETA;
+}
+
 
 function setDEBUG(lvl) {
 	DEBUG = lvl%DEBUGMAX;
@@ -139,6 +150,16 @@ function setDEBUG(lvl) {
 
 function toggleDEBUG() {
 	setDEBUG(DEBUG+1);
+}
+
+function toggleAttractionRepulsion() {
+	if ("REPULSION" == MODE_ATTRACTION_REPULSION )
+		MODE_ATTRACTION_REPULSION = "ATTRACTION";
+	if ("ATTRACTION" == MODE_ATTRACTION_REPULSION)
+		MODE_ATTRACTION_REPULSION = "REPULSION";	
+	
+	document.getElementById("modeAttractionRepulsion").innerHTML = MODE_ATTRACTION_REPULSION;
+
 }
 
 function toggleArrows() {
