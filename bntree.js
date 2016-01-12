@@ -60,6 +60,9 @@ var dt; // Global DT set by html
 // Bodies struct containing all bodies
 var bods;
 
+// TKV toggleAttractionRepulsion
+var MODE_ATTRACTION_REPULSION = "REPULSION"; // or "ATTRACTION"
+
 function resetBodies() {
 	if (bods) {
 		bods.pos = null;
@@ -323,9 +326,10 @@ function doBNtreeRecurse(bI,node) {
 }
 
 function getDist(x,y,x2,y2) {
-	// return Math.sqrt(Math.pow(x2-x,2)+Math.pow(y2-y,2));
-	// TKV
-	return Math.sqrt(Math.pow( getXModuloDist(x,x2),2)+Math.pow(getYModuloDist(y,y2),2));
+	if( MODE_ATTRACTION_REPULSION == "ATTRACTION")
+		return Math.sqrt(Math.pow(x2-x,2)+Math.pow(y2-y,2));
+	if( MODE_ATTRACTION_REPULSION == "REPULSION")
+		return Math.sqrt(Math.pow( getXModuloDist(x,x2),2)+Math.pow(getYModuloDist(y,y2),2));
 }
 
 // Update accelerations using BN tree
@@ -387,10 +391,12 @@ function getForceVecDirect(m,x,y,m2,x2,y2) {
 	var dx = x2-x;
 	var dy = y2-y;
 	
-	// TKV
-	dx = getXModuloDist( x, x2);
-	dy = getYModuloDist( y, y2);
-
+	if( MODE_ATTRACTION_REPULSION == "REPULSION")
+	{
+		dx = getXModuloDist( x, x2);
+		dy = getYModuloDist( y, y2);
+	}
+	
 	if (DEBUG>=3) {
 		console.log("y",y," y2 ", y2, " dy ", dy);
 	}
@@ -480,26 +486,35 @@ function updatePos(dt_step) {
 		bods.pos.y[i] += bods.vel.y[i]*dt_step;
 		
 		// TKV
-		resetPointInBBOX(i, bnRoot.box);
+		if( MODE_ATTRACTION_REPULSION == "REPULSION")
+			resetPointInBBOX(i, bnRoot.box);
 	}
 }
 function updateVel(dt_step) {
 	// Update body velocities based on accelerations
 	for (var i=0;i<bods.N;i++) {
-		// bods.vel.x[i] += bods.acc.x[i]*dt_step;
-		// bods.vel.y[i] += bods.acc.y[i]*dt_step;
-		// TKV
-		bods.vel.x[i] -= bods.acc.x[i]*dt_step;
-		bods.vel.y[i] -= bods.acc.y[i]*dt_step;
-		bods.vel.x[i] *= 0.5;
-		bods.vel.y[i] *= 0.5;
+		if( MODE_ATTRACTION_REPULSION == "ATTRACTION")
+		{
+			bods.vel.x[i] += bods.acc.x[i]*dt_step;
+			bods.vel.y[i] += bods.acc.y[i]*dt_step;
+		}
+		if( MODE_ATTRACTION_REPULSION == "REPULSION")
+		{
 		
-		// TKV, slow the speed below a threshold
-		var vel = Math.sqrt(Math.pow(bods.vel.x[i],2)+Math.pow(bods.vel.y[i],2));
-		var maxVel = (canvasElement.width/1000)/ dt_step;
-		if ( vel > maxVel) {
-			bods.vel.x[i] *= maxVel/vel; 
-			bods.vel.y[i] *= maxVel/vel; 
+			bods.vel.x[i] -= bods.acc.x[i]*dt_step;
+			bods.vel.y[i] -= bods.acc.y[i]*dt_step;
+			
+			// slow speed according to speed
+			bods.vel.x[i] *= 0.5;
+			bods.vel.y[i] *= 0.5;
+			
+			// TKV, slow speed below a threshold
+			var vel = Math.sqrt(Math.pow(bods.vel.x[i],2)+Math.pow(bods.vel.y[i],2));
+			var maxVel = (canvasElement.width/1000)/ dt_step;
+			if ( vel > maxVel) {
+				bods.vel.x[i] *= maxVel/vel; 
+				bods.vel.y[i] *= maxVel/vel; 
+			}
 		}
 	}
 }

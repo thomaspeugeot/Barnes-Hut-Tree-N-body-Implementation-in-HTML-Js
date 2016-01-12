@@ -24,6 +24,7 @@ function initGraphics(canvasId,dataId){
 	data = document.getElementById(dataId);
 	timeDisp = document.getElementById('timeDisp');
 	bodyCounter = document.getElementById('bodyCount');
+	modeAttractionRepulsion  = document.getElementById('modeAttractionRepulsion');
 
 	//gfxTimer = setInterval(refreshGraphics,1/60.0*1000);
 
