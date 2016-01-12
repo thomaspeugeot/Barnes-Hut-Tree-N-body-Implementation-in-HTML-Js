@@ -155,7 +155,7 @@ function toggleDEBUG() {
 function toggleAttractionRepulsion() {
 	if ("REPULSION" == MODE_ATTRACTION_REPULSION )
 		MODE_ATTRACTION_REPULSION = "ATTRACTION";
-	if ("ATTRACTION" == MODE_ATTRACTION_REPULSION)
+	else if ("ATTRACTION" == MODE_ATTRACTION_REPULSION)
 		MODE_ATTRACTION_REPULSION = "REPULSION";	
 	
 	document.getElementById("modeAttractionRepulsion").innerHTML = MODE_ATTRACTION_REPULSION;
